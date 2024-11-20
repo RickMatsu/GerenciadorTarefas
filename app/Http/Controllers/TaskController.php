@@ -12,11 +12,10 @@ class TaskController extends Controller
     {
         $tasks = auth()->user()->role === 'admin'
             ? Task::all() // Admin vê todas as tarefas
-            : Task::where('user_id', auth()->id())->get();
+            : Task::where('user_id', auth()->id())->get();        
         
-        dd($tasks);
-        return Inertia::render('Tasks/Index', [
-            'tasks' => $tasks->toArray(),
+        return Inertia::render('Dashboard', [
+            'tasks' => $tasks,
         ]);
     }
 

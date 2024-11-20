@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
 // Rotas para tarefas
 Route::middleware('auth')->group(function () {
     Route::get('/tasks/create', [TaskController::class, 'create'])->name('tasks.create');
-    Route::get('/tasks', [TaskController::class, 'index']);
+    Route::get('/dashboard', [TaskController::class, 'index'])->name('dashboard');
     Route::post('/tasks', [TaskController::class, 'store']);
     Route::delete('/tasks/{id}', [TaskController::class, 'destroy']);
 });

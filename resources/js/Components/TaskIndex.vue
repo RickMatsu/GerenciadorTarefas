@@ -1,4 +1,3 @@
-<!-- resources/js/components/TaskIndex.vue -->
 <template>
   <div class="d-flex justify-content-between align-items-center mb-">
     <h1>Lista de Tarefas</h1>
@@ -6,10 +5,7 @@
   </div>
 
   <!-- Componente de listagem -->
-  <TaskList
-    :tasks="tasks"
-    @update-tasks="removeTaskFromList"
-  />
+  <TaskList :tasks="tasks" @update-tasks="removeTaskFromList" />
 </template>
 
 <script>
@@ -21,7 +17,10 @@ export default {
     TaskList,
   },
   props: {
-    tasks: Array, // Recebe tarefas do componente pai
+    tasks: {
+      type: Array,
+      default: () => [], // Definindo um valor padrão para evitar erro caso `tasks` não seja passado
+    },
   },
   methods: {
     goToCreateTask() {
