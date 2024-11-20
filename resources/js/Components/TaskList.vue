@@ -45,7 +45,11 @@ export default {
       loading: false,
     };
   },
-  methods: {
+  methods: {   
+    removeTaskFromList(taskId) {
+      // Emite um evento para o componente pai para remover a tarefa
+      this.tasks = this.tasks.filter(task => task.id !== taskId);
+    },
     editTask(taskId) {
       this.$inertia.visit(`/tasks/${taskId}/edit`);
     },
@@ -53,15 +57,17 @@ export default {
       if (confirm('Você tem certeza que deseja excluir esta tarefa?')) {
         this.loading = true;
         axios
-          .delete(`/tasks/${taskId}`)
-          .then(() => {
-            this.$emit('update-tasks', taskId);
-            this.loading = false;
-          })
-          .catch(() => {
-            this.error = 'Erro ao excluir a tarefa.';
-            this.loading = false;
-          });
+        .delete(`/tasks/${taskId}`)
+        .then(() => {
+          // Emitir o evento para o componente pai atualizar a lista
+          this.$emit('update-tasks', taskId);
+          this.loading = false;
+        })
+        .catch((e) => {
+          console.log(e);
+          this.error = 'Erro ao excluir a tarefa.';
+          this.loading = false;
+        });
       }
     },
   },

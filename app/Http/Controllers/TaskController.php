@@ -46,32 +46,33 @@ class TaskController extends Controller
 
     public function edit(Task $task)
     {
-        $this->authorize('update', $task);
-
-        return inertia('Tasks/Edit', compact('task'));
-    }
+        return inertia('Tasks/Edit', [
+            'task' => $task,
+        ]);
+    }    
 
     public function update(Request $request, Task $task)
     {
-        $this->authorize('update', $task);
-
-        $request->validate([
+        // Valida os dados recebidos
+        $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:pendente,em andamento,concluída',
+            'description' => 'required|string',
         ]);
-
-        $task->update($request->only(['title', 'description', 'status']));
-
-        return redirect()->route('tasks.index')->with('success', 'Tarefa atualizada com sucesso!');
+    
+        // Atualiza a tarefa com os dados validados
+        $task->update($validated);
+    
+        // Redireciona para a página de listagem de tarefas com uma mensagem de sucesso
+        return Inertia::location(route('tasks.index'));
     }
 
     public function destroy(Task $task)
     {
-        $this->authorize('delete', $task);
-
-        $task->delete();
-
-        return redirect()->route('tasks.index')->with('success', 'Tarefa excluída com sucesso!');
+        try {
+            $task->delete();
+            return response()->json(['message' => 'Tarefa excluída com sucesso!']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Erro ao excluir a tarefa.'], 500);
+        }
     }
 }

@@ -1,20 +1,24 @@
 <template>
-  <div class="d-flex justify-content-between align-items-center mb-">
-    <h1>Lista de Tarefas</h1>
-    <button @click="goToCreateTask" class="btn btn-primary">Criar Tarefa</button>
-  </div>
-
-  <!-- Componente de listagem -->
-  <TaskList :tasks="tasks" @update-tasks="removeTaskFromList" />
+  <AuthenticatedLayout>
+    <template #header>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Lista de Tarefas</h1>
+        <button @click="goToCreateTask" class="btn btn-primary">Criar Tarefa</button>
+      </div>
+    </template>
+    <TaskList :tasks="tasks" @update-tasks="removeTaskFromList" />
+  </AuthenticatedLayout>
 </template>
 
 <script>
 import TaskList from './TaskList.vue';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 
 export default {
   name: 'TaskIndex',
   components: {
     TaskList,
+    AuthenticatedLayout,
   },
   props: {
     tasks: {

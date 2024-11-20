@@ -1,13 +1,11 @@
 <template>
   <Head title="Dashboard" />
-
   <AuthenticatedLayout>
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
           <div class="p-6 text-gray-900">
-            <!-- Inserindo o componente TaskIndex para exibir a lista de tarefas -->
-            <TaskIndex :tasks="tasks" />
+            <TaskIndex :tasks="tasks" @remove-task="removeTaskFromTasks" />
           </div>
         </div>
       </div>
@@ -26,10 +24,16 @@ export default {
     tasks: Array  // Aqui você define 'tasks' como uma prop do tipo Array
   },
   components: {
-    TaskList,
-    Head,
     TaskIndex,
+    TaskList,
+    Head,    
     AuthenticatedLayout,
+  },
+  methods: {
+    handleTaskDelete(taskId) {
+      // Atualizar a lista de tarefas após a exclusão
+      this.tasks = this.tasks.filter(task => task.id !== taskId);
+    },
   },
   mounted() {
     console.log(this.tasks);  // Aqui você verifica se as tarefas estão sendo passadas corretamente
